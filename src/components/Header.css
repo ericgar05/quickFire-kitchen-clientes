@@ -1,0 +1,84 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--surface-variant);
+  margin: 0;
+  padding: 10px 40px;
+  width: 100%;
+
+  .header-order-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    position: relative;
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      width: 15px;
+      height: 15px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    svg {
+      fill: var(--text-primary);
+      stroke: var(--text-primary);
+      stroke-width: 3 px;
+    }
+  }
+}
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  label {
+    text-align: center;
+    h1 {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text-primary);
+      text-align: center;
+
+      span {
+        color: var(--primary-color);
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: 900;
+        color: var(--text-primary);
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 10px 15px;
+  }
+
+  .header-info img {
+    width: 35px;
+    height: 35px;
+  }
+  .header-info label h1 {
+    font-size: 18px;
+  }
+  .header-info label h3 {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,75 @@
+.payment-card-inactive,
+.payment-card-active {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--surface-variant);
+}
+
+.payment-card-inactive {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.payment-card-active {
+  border: 1px solid var(--primary-color);
+}
+
+.payment-info-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.payment-info-container div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.payment-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.payment-description {
+  margin: 0;
+  font-size: 12px;
+  color: #888;
+}
+
+.payment-info-container svg {
+  width: 30px;
+  height: 30px;
+  fill: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 5px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.payment-card-active .payment-info-container svg {
+  background-color: var(--primary-color);
+  fill: #fff;
+}
+
+.payment-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.payment-card-active .payment-radio {
+  border: 6px solid var(--primary-color);
+  background-color: transparent;
+}

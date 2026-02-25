@@ -1,0 +1,39 @@
+.nav-container {
+  display: inline-flex;
+  flex-direction: row;
+  background-color: var(--surface-variant-3);
+  margin-top: 1.5rem;
+  padding: 4px;
+  border: 2px solid var(--border-color2);
+  border-radius: 8px;
+  gap: 4px;
+  position: relative;
+  z-index: 10;
+}
+
+.nav-container-button,
+.nav-container-button-active {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+}
+.nav-container-button-active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
