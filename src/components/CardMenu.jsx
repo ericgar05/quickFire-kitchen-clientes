@@ -3,13 +3,17 @@ import { AddIcon } from "../assets/Icons/Icons";
 import { useCar } from "../context/CarProvider";
 import "./CardMenu.css";
 export function CardMenu({ item }) {
-  const { addToCar } = useCar();
+  const { addToCar, carItems } = useCar();
+
+  const isSelected = carItems.some((carItem) => carItem.id === item.id);
 
   const handleAddToCar = () => {
-    addToCar(item);
+    if (!isSelected) {
+      addToCar(item);
+    }
   };
   return (
-    <main className="card-menu">
+    <main className={`card-menu ${isSelected ? "selected" : ""}`}>
       <section className="img-container-menu">
         <img src={item.image} />
       </section>
@@ -23,7 +27,7 @@ export function CardMenu({ item }) {
         <p>{item.description}</p>
       </section>
       <section className="button-container-menu">
-        <button onClick={handleAddToCar}>
+        <button onClick={handleAddToCar} disabled={isSelected}>
           <AddIcon />
         </button>
       </section>

@@ -77,6 +77,22 @@
     }
   }
 }
+
+.card-menu.selected {
+  opacity: 0.7;
+  cursor: default;
+  border-color: var(--primary-color);
+}
+
+.card-menu.selected:hover {
+  transform: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-menu.selected .button-container-menu button {
+  background-color: var(--border-color2);
+  cursor: not-allowed;
+}
 .description-product-menu {
   padding: 0 10px;
   width: 100%;
