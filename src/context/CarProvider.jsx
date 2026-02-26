@@ -15,7 +15,7 @@ export function CarProvider({ children }) {
     // console.log("Se agrego cantidad");
   };
   const addToCar = (product) => {
-    setCarItems((prevItems) => [...prevItems, product]);
+    setCarItems((prevItems) => [...prevItems, { ...product, quantity: 1 }]);
     setContOrders((prevCont) => prevCont + 1);
   };
 
@@ -31,6 +31,12 @@ export function CarProvider({ children }) {
     setContOrders(0);
     console.log("Se limpio el carrito");
   };
+
+  const totalCalculated = carItems.reduce(
+    (acc, item) => acc + item.price * (item.quantity || 1),
+    0,
+  );
+
   const data = {
     carItems,
     contOrders,
@@ -41,7 +47,7 @@ export function CarProvider({ children }) {
     clearCar,
     removeFromCar,
     addQuantity,
-    // total,
+    total: totalCalculated,
   };
   return <CarContext.Provider value={data}>{children}</CarContext.Provider>;
 }

@@ -6,7 +6,7 @@ import { useCar } from "../context/CarProvider";
 import { useOrder } from "../context/OrderProvider";
 import "./OrderPreview.css";
 export function OrderPreview({ toggleOrder, setToggleOrder }) {
-  const { carItems, clearCar, contOrders } = useCar();
+  const { carItems, clearCar, contOrders, total } = useCar();
   const { submitOrder, loading, error } = useOrder();
 
   const handleOrder = () => {
@@ -99,6 +99,10 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
               {error}
             </p>
           )}
+          <section className="total-container">
+            <h3>Total:</h3>
+            <h3>${total.toFixed(2)}</h3>
+          </section>
           <button
             className="footer-button"
             onClick={step ? handleOrderSubmit : handleNextStep}

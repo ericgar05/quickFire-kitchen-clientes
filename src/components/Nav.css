@@ -1,48 +1,69 @@
 .nav-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
-  background-color: var(--surface-variant-3);
-  margin-top: 1.5rem;
-  padding: 4px;
-  border: 2px solid var(--border-color2);
-  border-radius: 8px;
-  gap: 4px;
-  position: relative;
-  z-index: 10;
+  margin-top: 1rem;
+  padding: 8px 10px;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
   max-width: 100%;
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  background-color: transparent;
 }
 
 .nav-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .nav-container-button,
 .nav-container-button-active {
-  background: transparent;
-  border: none;
-  padding: 8px 16px;
+  background: var(--surface-variant-3);
+  border: 1px solid var(--border-color2);
+  padding: 10px 20px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #fff;
-  transition: all 0.2s ease;
-  border-radius: 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 25px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background-color: var(--primary-color);
-    color: #fff;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 73, 33, 0.3);
   }
 }
+
 .nav-container-button-active {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(220, 73, 33, 0.4);
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 10px 5px;
+    margin-top: 0.5rem;
+  }
+  .nav-container-button,
+  .nav-container-button-active {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
 }

@@ -4,13 +4,15 @@ import "./QuantityButton.css";
 export function QuantityButton({ cont, setCont, index }) {
   const { addQuantity } = useCar();
   const handleIncrement = () => {
-    setCont(cont + 1);
-    addQuantity(index, cont);
+    const newCont = cont + 1;
+    setCont(newCont);
+    addQuantity(index, newCont);
   };
   const handleDecrement = () => {
     if (cont > 1) {
-      setCont(cont - 1);
-      addQuantity(index, cont);
+      const newCont = cont - 1;
+      setCont(newCont);
+      addQuantity(index, newCont);
     }
   };
   return (
