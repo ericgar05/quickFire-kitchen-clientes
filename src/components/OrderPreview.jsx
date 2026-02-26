@@ -3,9 +3,11 @@ import { OrderCard } from "./OrderCard";
 import { PaymentMethod } from "./PaymentMethod";
 import { useState } from "react";
 import { useCar } from "../context/CarProvider";
+import { useOrder } from "../context/OrderProvider";
 import "./OrderPreview.css";
 export function OrderPreview({ toggleOrder, setToggleOrder }) {
-  const { carItems, clearCar, setContOrders, contOrders } = useCar();
+  const { carItems, clearCar, contOrders } = useCar();
+  const { submitOrder, loading, error } = useOrder();
 
   const handleOrder = () => {
     setToggleOrder(!toggleOrder);
@@ -17,21 +19,17 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
     setStep(1);
   };
 
-  const handleOrderSubmit = () => {
-    const products = carItems.map((item) => ({
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-    }));
-    const orderSubmit = {
-      products,
+  const handleOrderSubmit = async () => {
+    const result = await submitOrder({
+      carItems,
       paymentMethod,
-    };
-    clearCar();
-    setContOrders(0);
-    setStep(0);
-    setToggleOrder(false);
-    console.log("Se envio la orden", orderSubmit);
+      buyerName: "Cliente",
+    });
+    if (result.success) {
+      clearCar();
+      setStep(0);
+      setToggleOrder(false);
+    }
   };
 
   const cardPayment = [
@@ -70,7 +68,7 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
               <OrderCard
                 key={index}
                 index={index}
-                img={order.img}
+                img={order.image}
                 title={order.name}
                 price={order.price}
               />
@@ -94,11 +92,23 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
           )}
         </section>
         <footer className={contOrders ? "footer-active" : "footer-inactive"}>
+          {error && (
+            <p
+              style={{ color: "red", fontSize: "0.8rem", marginBottom: "4px" }}
+            >
+              {error}
+            </p>
+          )}
           <button
             className="footer-button"
             onClick={step ? handleOrderSubmit : handleNextStep}
+            disabled={loading}
           >
-            {step ? "Confirmar Pedido" : "Ir a metodos de pago"}
+            {loading
+              ? "Enviando..."
+              : step
+                ? "Confirmar Pedido"
+                : "Ir a metodos de pago"}
           </button>
         </footer>
       </section>

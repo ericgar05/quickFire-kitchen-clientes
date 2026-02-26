@@ -16,19 +16,19 @@ export function CarProvider({ children }) {
   };
   const addToCar = (product) => {
     setCarItems((prevItems) => [...prevItems, product]);
-    // setTotal((prevTotal) => prevTotal + product.price);
-    // console.log("Se agrego orden");
+    setContOrders((prevCont) => prevCont + 1);
   };
 
   const removeFromCar = (indexToRemove) => {
     setCarItems((prevItems) =>
       prevItems.filter((_, index) => index !== indexToRemove),
     );
+    setContOrders((prevCont) => Math.max(0, prevCont - 1));
     console.log("Se elimino orden", indexToRemove);
   };
   const clearCar = () => {
     setCarItems([]);
-    // setTotal(0);
+    setContOrders(0);
     console.log("Se limpio el carrito");
   };
   const data = {

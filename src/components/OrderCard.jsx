@@ -4,11 +4,10 @@ import { useState } from "react";
 import { useCar } from "../context/CarProvider";
 import { Close } from "../assets/Icons/Icons";
 export function OrderCard({ img, title, price, index }) {
-  const { removeFromCar, addContOrder, contOrders, setContOrders } = useCar();
+  const { removeFromCar } = useCar();
   const [cont, setCont] = useState(1);
   const handleRemoveFromCar = (index) => {
     removeFromCar(index);
-    setContOrders(contOrders - 1);
   };
   return (
     <main className="order-card">
