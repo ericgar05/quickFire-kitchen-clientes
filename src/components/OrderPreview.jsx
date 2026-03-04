@@ -25,11 +25,6 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
       paymentMethod,
       buyerName: "Cliente",
     });
-    if (result.success) {
-      clearCar();
-      setStep(0);
-      setToggleOrder(false);
-    }
   };
 
   const cardPayment = [

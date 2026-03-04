@@ -10,8 +10,13 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-
-  .header-order-button {
+  .header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .header-order-button,
+  .header-notification-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -39,6 +44,12 @@
       stroke: var(--text-primary);
       stroke-width: 3 px;
     }
+  }
+}
+.notification-button {
+  svg {
+    width: 24px;
+    height: 24px;
   }
 }
 .header-info {
