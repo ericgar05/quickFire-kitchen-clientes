@@ -1,10 +1,18 @@
-import { Close, ClipboardList, CreditCard, Cash } from "../assets/Icons/Icons";
+import {
+  Close,
+  ClipboardList,
+  CreditCard,
+  Cash,
+  CheckIcon,
+} from "../assets/Icons/Icons";
 import { OrderCard } from "./OrderCard";
 import { PaymentMethod } from "./PaymentMethod";
 import { useState } from "react";
 import { useCar } from "../context/CarProvider";
 import { useOrder } from "../context/OrderProvider";
+import { Modal } from "./Modal";
 import "./OrderPreview.css";
+
 export function OrderPreview({ toggleOrder, setToggleOrder }) {
   const { carItems, clearCar, contOrders, total } = useCar();
   const { submitOrder, loading, error } = useOrder();
@@ -14,6 +22,7 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
   };
   const [step, setStep] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("Tarjeta");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
 
   const handleNextStep = () => {
     setStep(1);
@@ -25,6 +34,17 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
       paymentMethod,
       buyerName: "Cliente",
     });
+
+    if (result.success) {
+      setIsSuccessModalOpen(true);
+    }
+  };
+
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    clearCar();
+    setToggleOrder(false);
+    setStep(0);
   };
 
   const cardPayment = [
@@ -111,6 +131,23 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
           </button>
         </footer>
       </section>
+
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={handleCloseSuccessModal}
+        title="¡Orden Creada!"
+      >
+        <div className="order-modal">
+          <CheckIcon />
+          <p>Su orden ha sido creada con éxito.</p>
+          <button
+            onClick={handleCloseSuccessModal}
+            className="order-modal-button"
+          >
+            Aceptar
+          </button>
+        </div>
+      </Modal>
     </>
   );
 }

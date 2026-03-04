@@ -137,6 +137,34 @@
     font-weight: 900;
   }
 }
+.order-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  svg {
+    width: 100px;
+    height: 100px;
+    fill: var(--primary-color);
+  }
+  p {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--text-primary);
+  }
+  .order-modal-button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 900;
+    margin-top: 10px;
+  }
+}
 .footer-button {
   padding: 20px 50px;
   background-color: var(--primary-color);

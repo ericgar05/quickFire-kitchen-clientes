@@ -1,0 +1,76 @@
+.Modal__window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.Modal__content {
+  background: var(--surface-variant);
+  padding: 20px 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  color: white;
+  animation: slideUp 0.4s ease;
+}
+.Modal__content::-webkit-scrollbar {
+  display: none;
+}
+
+.Modal__close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #ff6600;
+  font-size: 30px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.Modal__close:hover {
+  transform: scale(1.2);
+}
+
+.Modal__name {
+  font-size: 24px;
+  padding: 10px 0;
+  color: var(--text-primary);
+  /* margin-bottom: 5px; */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
