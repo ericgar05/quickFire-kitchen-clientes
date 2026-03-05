@@ -1,18 +1,33 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CarContext } from "./CarContext";
 
 export function CarProvider({ children }) {
-  const [carItems, setCarItems] = useState([]);
-  const [contOrders, setContOrders] = useState(0);
+  const [carItems, setCarItems] = useState(() => {
+    const saved = localStorage.getItem("carItems");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [contOrders, setContOrders] = useState(() => {
+    const saved = localStorage.getItem("contOrders");
+    return saved ? JSON.parse(saved) : 0;
+  });
   const [total, setTotal] = useState(0);
   const [methodPayment, setMethodPayment] = useState("Tarjeta");
+
+  // Guarda en localStorage cuando cambian
+  useEffect(() => {
+    localStorage.setItem("carItems", JSON.stringify(carItems));
+  }, [carItems]);
+
+  useEffect(() => {
+    localStorage.setItem("contOrders", JSON.stringify(contOrders));
+  }, [contOrders]);
+
   const addQuantity = (index, newQuantity) => {
     setCarItems((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems[index].quantity = newQuantity;
       return updatedItems;
     });
-    // console.log("Se agrego cantidad");
   };
   const addToCar = (product) => {
     setCarItems((prevItems) => [...prevItems, { ...product, quantity: 1 }]);

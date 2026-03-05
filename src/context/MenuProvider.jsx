@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { MenuContext } from "./MenuContext";
 import supabase from "../../api/supabase.js";
+import { useAuth } from "./AuthContext.jsx";
+
 export const MenuProvider = ({ children }) => {
   const [menu, setMenu] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { isAuthenticated } = useAuth();
 
   const fetchMenu = async () => {
+    if (!isAuthenticated) return;
+
     // 1. Cargar menús y categorías en paralelo
     const [menusResponse, categoriesResponse] = await Promise.all([
       supabase.from("menus").select("*"),
@@ -40,13 +45,17 @@ export const MenuProvider = ({ children }) => {
       };
     });
 
-    console.log("Menú cargado con categorías:", menuData);
     setMenu(menuData);
   };
 
   useEffect(() => {
-    fetchMenu();
-  }, []);
+    if (isAuthenticated) {
+      fetchMenu();
+    } else {
+      setMenu([]);
+      setCategories([]);
+    }
+  }, [isAuthenticated]);
 
   return (
     <MenuContext.Provider value={{ menu, categories, fetchMenu }}>

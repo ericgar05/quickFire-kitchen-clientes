@@ -10,19 +10,12 @@ export const AuthProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : {};
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // return localStorage.getItem("isAuthenticated") === "true";
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("isAuthenticated") === "true";
+  });
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const fecthLogin = async () => {
-    const { data, error } = await supabase.from("clients").select("*");
-    console.log(data);
-  };
-
-  useEffect(() => {
-    fecthLogin();
-  }, []);
 
   const handleLogin = async (formData) => {
     console.log("Datos de login:", formData);

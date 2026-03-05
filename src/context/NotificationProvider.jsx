@@ -5,9 +5,9 @@ import supabase from "../../api/supabase";
 
 export function NotificationProvider({ children }) {
   const [notification, setNotification] = useState([]);
-  const { userData } = useAuth();
+  const { userData, isAuthenticated } = useAuth();
   const fetchNotification = async () => {
-    if (!userData) return;
+    if (!isAuthenticated || !userData?.id) return;
     const { data, error } = await supabase
       .from("notifications")
       .select("*")
