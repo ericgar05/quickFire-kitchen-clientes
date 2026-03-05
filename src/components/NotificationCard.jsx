@@ -11,9 +11,12 @@ export function NotificationCard({ orderId, description, orderStatus }) {
   } else if (orderStatus === "pendiente") {
     statusMessage = "Su orden está pendiente de pago";
     IconToRender = ClockIon;
-  } else if (orderStatus === "completada") {
+  } else if (orderStatus === "Listo") {
     statusMessage = "Vaya a retirar su orden";
     IconToRender = CheckIcon;
+  } else if (orderStatus === "en proceso") {
+    statusMessage = "Su orden está en proceso";
+    IconToRender = ClockIon;
   }
 
   return (
