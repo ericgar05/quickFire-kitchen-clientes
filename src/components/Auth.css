@@ -88,12 +88,16 @@
 
 .form-group {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 .client-data {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
 }
 .form-group input {
   width: 100%;

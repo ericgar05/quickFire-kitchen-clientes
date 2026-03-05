@@ -20,6 +20,7 @@ createRoot(document.getElementById("root")).render(
             <NotificationProvider>
               <OrderProvider>
                 <App />
+                <AppToaster />
               </OrderProvider>
             </NotificationProvider>
           </CarProvider>

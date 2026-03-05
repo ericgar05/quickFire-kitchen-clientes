@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+
         userData,
         handleLogin,
         handleLogout,

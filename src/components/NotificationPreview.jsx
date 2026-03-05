@@ -29,6 +29,7 @@ export function NotificationPreview({
               title={item.title}
               orderId={item.order_id}
               description={item.description}
+              orderStatus={item.order_status}
             />
           );
         })}

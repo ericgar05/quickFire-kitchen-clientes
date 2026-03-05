@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../api/supabase";
 import bcrypt from "bcryptjs";
+import { sileo } from "sileo";
 
-//Siempre poner el .js
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,16 +28,8 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Validar que las contraseñas coincidan
-    console.log("Datos de registro:", formData);
-
-    //? Encriptación de la contraseña con bcrypt (bcryptjs)
+  const registerTask = async () => {
     const dniHashed = await bcrypt.hash(formData.dni, 12);
-    console.log(dniHashed);
-
-    //? Peticion para registrar con Supabase
     const { error } = await supabase.from("clients").insert({
       name: formData.name,
       last_name: formData.lastname,
@@ -48,14 +40,29 @@ const Register = () => {
     });
 
     if (error) {
-      console.log(error);
       if (error.code === "23505") {
-        alert("Este correo ya está registrado.");
+        throw new Error("Este correo ya está registrado.");
       } else {
-        alert("Error: " + error.message);
+        throw new Error(error.message);
       }
-      return;
     }
+    return "success";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    sileo.promise(registerTask(), {
+      loading: { title: "Creando cuenta..." },
+      success: () => {
+        handleSwitch();
+        return { title: "Cuenta creada exitosamente" };
+      },
+      error: (err) => ({
+        title: "Error al registrarse",
+        description: err.message,
+        fill: "black",
+      }),
+    });
   };
 
   //si hay un await la funcion debe ser async

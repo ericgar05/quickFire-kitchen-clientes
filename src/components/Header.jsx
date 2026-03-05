@@ -3,9 +3,11 @@ import {
   BellIcon,
   UserIcon,
   AngleDownIcon,
+  LogoutIcon,
 } from "../assets/Icons/Icons";
 import { useCar } from "../context/CarProvider";
 import { useNotification } from "../context/NotificationContext";
+import { useAuth } from "../context/AuthContext";
 import "./Header.css";
 
 export function Header({
@@ -16,6 +18,7 @@ export function Header({
 }) {
   const { contOrders } = useCar();
   const { notification, markAllAsRead } = useNotification();
+  const { handleLogout } = useAuth();
   const unreadCount =
     notification?.filter((item) => item.status === "unread").length || 0;
 
@@ -52,11 +55,8 @@ export function Header({
           <CarShopping />
           {contOrders > 0 && <span>{contOrders}</span>}
         </button>
-        <button className="header-user-button" onClick={handleOrder}>
-          <UserIcon />
-          <div>
-            <AngleDownIcon />
-          </div>
+        <button className="header-logout-button" onClick={handleLogout}>
+          <LogoutIcon />
         </button>
       </section>
     </header>
