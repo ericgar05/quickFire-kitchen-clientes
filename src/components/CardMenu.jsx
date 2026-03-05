@@ -3,18 +3,22 @@ import { AddIcon } from "../assets/Icons/Icons";
 import { useCar } from "../context/CarProvider";
 import "./CardMenu.css";
 export function CardMenu({ item }) {
-  const { addToCar, carItems } = useCar();
-  //Mejorar esto aca porque necesito un handle para que no se pueda agregar el mismo producto dos veces
-  const isSelected = carItems.some((carItem) => carItem.id === item.id);
+  const { addToCar, removeFromCar, carItems } = useCar();
+  // Buscamos el índice del producto en el carrito
+  const indexInCar = carItems.findIndex((carItem) => carItem.id === item.id);
+  const isSelected = indexInCar !== -1;
 
-  const handleAddToCar = () => {
+  const handleToggleCar = (e) => {
+    e?.stopPropagation();
     if (!isSelected) {
       addToCar(item);
+    } else {
+      removeFromCar(indexInCar);
     }
   };
   return (
     <main
-      onClick={handleAddToCar}
+      onClick={handleToggleCar}
       className={`card-menu ${isSelected ? "selected" : ""}`}
     >
       <section className="img-container-menu">
@@ -30,7 +34,7 @@ export function CardMenu({ item }) {
         <p>{item.description}</p>
       </section>
       <section className="button-container-menu">
-        <button onClick={handleAddToCar} disabled={isSelected}>
+        <button onClick={handleToggleCar}>
           <AddIcon />
         </button>
       </section>

@@ -1,10 +1,16 @@
 import { useState, useContext } from "react";
 import { OrderContext } from "./OrderContext";
 import supabase from "../../api/supabase.js";
+import { useNotification } from "./NotificationContext.jsx";
+import { useAuth } from "./AuthContext.jsx";
 
 export function OrderProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+
+  const { fetchNotification, setNotification } = useNotification();
+  const { userData } = useAuth();
 
   const submitOrder = async ({ carItems, paymentMethod, buyerName }) => {
     setLoading(true);
@@ -16,7 +22,7 @@ export function OrderProvider({ children }) {
         .from("orders")
         .insert([
           {
-            buyer_name: buyerName || "Cliente",
+            buyer_name: userData.name,
             payment_type: paymentMethod,
             status: "pendiente",
           },
@@ -26,10 +32,12 @@ export function OrderProvider({ children }) {
 
       if (orderError) throw orderError;
 
-      const orderId = orderData.id;
-      console.log("Orden creada, id:", orderId);
+      const newOrderId = orderData.id;
+      console.log("Orden creada, id:", newOrderId);
 
-      if (!orderId) throw new Error("No se obtuvo el ID de la orden");
+      if (!newOrderId) throw new Error("No se obtuvo el ID de la orden");
+
+      setOrderId(newOrderId);
 
       // 2. Insertar los items de la orden
       // Ya que los items del carrito a veces solo tienen {name, price, quantity} sin ID,
@@ -53,7 +61,7 @@ export function OrderProvider({ children }) {
             : null;
 
         return {
-          order_id: orderId,
+          order_id: newOrderId,
           menu_id: realMenuId,
           quantity: item.quantity ?? 1,
           unit_price: item.price,
@@ -83,7 +91,21 @@ export function OrderProvider({ children }) {
 
       if (itemsError) throw itemsError;
 
-      return { success: true, orderId };
+      const { error: notficationError } = await supabase
+        .from("notifications")
+        .insert({
+          client_id: userData.id,
+          order_id: newOrderId,
+          title: "Orden Creada",
+          status: "unread",
+          description: `Anda a la caja a pagar tu orden #${newOrderId}.`,
+        });
+      if (notficationError) {
+        console.log("Error al crear la notificación:", notficationError);
+      }
+      fetchNotification();
+
+      return { success: true, orderId: newOrderId };
     } catch (err) {
       console.error("Error al subir la orden:", err);
       setError(err.message);
@@ -94,7 +116,7 @@ export function OrderProvider({ children }) {
   };
 
   return (
-    <OrderContext.Provider value={{ submitOrder, loading, error }}>
+    <OrderContext.Provider value={{ submitOrder, loading, error, orderId }}>
       {children}
     </OrderContext.Provider>
   );

@@ -5,34 +5,43 @@ import {
   Cash,
   CheckIcon,
 } from "../assets/Icons/Icons";
-import { OrderCard } from "./OrderCard";
+import { OrderCart } from "./OrderCart";
 import { PaymentMethod } from "./PaymentMethod";
 import { useState } from "react";
 import { useCar } from "../context/CarProvider";
 import { useOrder } from "../context/OrderProvider";
+import { useNotification } from "../context/NotificationContext";
+import { useAuth } from "../context/AuthContext";
 import { Modal } from "./Modal";
+import { ModalRight } from "./ModalRight";
 import "./OrderPreview.css";
 
 export function OrderPreview({ toggleOrder, setToggleOrder }) {
   const { carItems, clearCar, contOrders, total } = useCar();
-  const { submitOrder, loading, error } = useOrder();
+  const { submitOrder, loading, error, orderId } = useOrder();
+  const { fetchNotification } = useNotification();
+  const { userData } = useAuth();
 
   const handleOrder = () => {
     setToggleOrder(!toggleOrder);
   };
   const [step, setStep] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("Tarjeta");
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleNextStep = () => {
     setStep(1);
+  };
+
+  const handlePreviousStep = () => {
+    setStep(0);
   };
 
   const handleOrderSubmit = async () => {
     const result = await submitOrder({
       carItems,
       paymentMethod,
-      buyerName: "Cliente",
+      buyerName: userData.name,
     });
 
     if (result.success) {
@@ -62,25 +71,18 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
 
   return (
     <>
-      <div
-        className={toggleOrder ? "overlay-active" : "overlay-inactive"}
-      ></div>
-      <section className={toggleOrder ? "active" : "inactive"}>
-        <header className="header-preview">
-          <h1>
-            <ClipboardList />
-            Resumen de la orden
-          </h1>
-          <button onClick={handleOrder}>
-            <Close />
-          </button>
-        </header>
+      <ModalRight
+        toggleOrder={toggleOrder}
+        handleOrder={handleOrder}
+        tittle="Resumen de la orden"
+        icon={<ClipboardList />}
+      >
         <section className="content-card">
           {!contOrders ? (
             <p className="not-product">No hay productos en el carrito</p>
           ) : !step ? (
             carItems.map((order, index) => (
-              <OrderCard
+              <OrderCart
                 key={index}
                 index={index}
                 img={order.image}
@@ -107,47 +109,56 @@ export function OrderPreview({ toggleOrder, setToggleOrder }) {
           )}
         </section>
         <footer className={contOrders ? "footer-active" : "footer-inactive"}>
-          {error && (
-            <p
-              style={{ color: "red", fontSize: "0.8rem", marginBottom: "4px" }}
-            >
-              {error}
-            </p>
-          )}
           <section className="total-container">
             <h3>Total:</h3>
             <h3>${total.toFixed(2)}</h3>
           </section>
-          <button
-            className="footer-button"
-            onClick={step ? handleOrderSubmit : handleNextStep}
-            disabled={loading}
+          <section
+            className={
+              step
+                ? "footer-buttons-container-active"
+                : "footer-buttons-container-inactive"
+            }
           >
-            {loading
-              ? "Enviando..."
-              : step
-                ? "Confirmar Pedido"
-                : "Ir a metodos de pago"}
-          </button>
+            <button
+              className={!step ? "close-button" : "footer-button"}
+              onClick={handlePreviousStep}
+              disabled={loading}
+            >
+              Volver
+            </button>
+            <button
+              className="footer-button"
+              onClick={step ? handleOrderSubmit : handleNextStep}
+              disabled={loading}
+            >
+              {loading
+                ? "Enviando..."
+                : step
+                  ? "Confirmar Pedido"
+                  : "Ir a metodos de pago"}
+            </button>
+          </section>
         </footer>
-      </section>
 
-      <Modal
-        isOpen={isSuccessModalOpen}
-        onClose={handleCloseSuccessModal}
-        title="¡Orden Creada!"
-      >
-        <div className="order-modal">
-          <CheckIcon />
-          <p>Su orden ha sido creada con éxito.</p>
-          <button
-            onClick={handleCloseSuccessModal}
-            className="order-modal-button"
-          >
-            Aceptar
-          </button>
-        </div>
-      </Modal>
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onClose={handleCloseSuccessModal}
+          title="¡Orden Creada!"
+        >
+          <div className="order-modal">
+            <CheckIcon />
+            <p>Su orden #{orderId} ha sido creada con éxito.</p>
+            <p>Pase por la caja #1 para pagar su orden.</p>
+            <button
+              onClick={handleCloseSuccessModal}
+              className="order-modal-button"
+            >
+              Aceptar
+            </button>
+          </div>
+        </Modal>
+      </ModalRight>
     </>
   );
 }

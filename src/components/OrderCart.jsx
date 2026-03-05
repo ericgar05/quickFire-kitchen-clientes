@@ -1,9 +1,10 @@
 import { QuantityButton } from "./QuantityButton";
-import "./OrderCard.css";
 import { useState } from "react";
 import { useCar } from "../context/CarProvider";
 import { Close } from "../assets/Icons/Icons";
-export function OrderCard({ img, title, price, index }) {
+import "./OrderCart.css";
+
+export function OrderCart({ img, title, price, index }) {
   const { removeFromCar } = useCar();
   const [cont, setCont] = useState(1);
   const handleRemoveFromCar = (index) => {

@@ -8,20 +8,22 @@
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   .header-buttons {
     display: flex;
     gap: 10px;
     align-items: center;
+    justify-content: center;
   }
   .header-order-button,
-  .header-notification-button {
+  .header-notification-button,
+  .header-user-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     position: relative;
 
     span {
@@ -38,19 +40,28 @@
       font-size: 10px;
       font-weight: 700;
     }
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      bottom: 7px;
+      right: 5px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      width: 12px;
+      height: 12px;
+    }
 
     svg {
       fill: var(--text-primary);
-      stroke: var(--text-primary);
-      stroke-width: 3 px;
+      width: 30px;
     }
   }
 }
-.notification-button {
-  svg {
-    width: 24px;
-    height: 24px;
-  }
+
+.header-container .header-user-button svg {
+  width: 35px;
 }
 .header-info {
   display: flex;

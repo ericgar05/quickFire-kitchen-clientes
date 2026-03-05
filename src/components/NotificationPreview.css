@@ -1,0 +1,9 @@
+.card-notification {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  flex: 1; /* Permite que ocupe todo el espacio disponible y el scroll funcione */
+}

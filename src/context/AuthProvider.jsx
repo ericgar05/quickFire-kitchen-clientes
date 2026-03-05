@@ -1,0 +1,81 @@
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import { useState, useEffect } from "react";
+import supabase from "../../api/supabase";
+import bcrypt from "bcryptjs";
+
+export const AuthProvider = ({ children }) => {
+  const [userData, setUserData] = useState(() => {
+    const saved = localStorage.getItem("userSession");
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // return localStorage.getItem("isAuthenticated") === "true";
+
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const fecthLogin = async () => {
+    const { data, error } = await supabase.from("clients").select("*");
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fecthLogin();
+  }, []);
+
+  const handleLogin = async (formData) => {
+    console.log("Datos de login:", formData);
+    // Aquí iría la lógica para enviar los datos al servidor
+    // TODO: Devuelve un objeto con una propiedad (En este caso porque solo se selecciona password_hash)
+
+    const { data, error } = await supabase
+      .from("clients")
+      .select("*")
+      .eq("email", formData.email)
+      .single();
+
+    console.log(data);
+
+    // TODO: Si no pones .single te devuelve un array
+
+    if (error || !data) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    const isMatch = await bcrypt.compare(formData.dni, data.dni);
+    if (!isMatch) {
+      throw new Error("Contraseña incorrecta");
+    }
+
+    setUserData(data);
+    setIsAuthenticated(true);
+    localStorage.setItem("userSession", JSON.stringify(data));
+    localStorage.setItem("isAuthenticated", "true");
+
+    const lastPath = localStorage.getItem("lastPath") || "/";
+    navigate(lastPath);
+  };
+
+  const handleLogout = () => {
+    setUserData({});
+    setIsAuthenticated(false);
+    localStorage.removeItem("userSession");
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("lastPath");
+    navigate("/login");
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        userData,
+        handleLogin,
+        handleLogout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
