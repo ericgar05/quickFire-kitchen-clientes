@@ -67,3 +67,9 @@
     border-radius: 20px;
   }
 }
+
+@media (min-width: 769px) {
+  .nav-container {
+    justify-content: center;
+  }
+}
