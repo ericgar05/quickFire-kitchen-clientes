@@ -42,6 +42,7 @@ export const MenuProvider = ({ children }) => {
         description: item.description,
         category: categoryObj ? categoryObj.name : "Sin categoría",
         category_id: item.category_id,
+        status: item.status,
       };
     });
 
