@@ -17,6 +17,8 @@ export function HomePage() {
   const [active, setActive] = useState("Todos");
 
   const filterMenu = menu.filter((item) => {
+    if (item.status === true) return false;
+
     if (active === "Todos") return true;
 
     const normalize = (str) =>
